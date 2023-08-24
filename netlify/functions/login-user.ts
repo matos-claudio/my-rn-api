@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import connectDB from "../db-conection";
 
 const UserSchema = new mongoose.Schema({
   name: String,
@@ -15,7 +16,7 @@ exports.handler = async (event: any, context: any) => {
     return { statusCode: 405, body: "Method Not Allowed" };
   }
 
-  await mongoose.connect(process.env.DB_CONNECTION_STRING);
+  await connectDB();
 
   const { email, password } = JSON.parse(event.body);
 
@@ -28,7 +29,7 @@ exports.handler = async (event: any, context: any) => {
         body: JSON.stringify({ error: "Invalid email or password" }),
       };
     }
-    const isPasswordValid = await bcrypt.compare(password, user.password)
+    const isPasswordValid = await bcrypt.compare(password, user.password!);
 
     if (!isPasswordValid) {
       return {

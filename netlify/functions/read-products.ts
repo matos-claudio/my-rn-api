@@ -1,14 +1,19 @@
 import mongoose from "mongoose";
 import connectDB from "../db-conection";
 
-const UserSchema = new mongoose.Schema({
+const ProductSchema = new mongoose.Schema({
   name: String,
-  email: String,
-  password: String,
-  firebase_token: String,
+  price: Number,
+  unit: String,
+  category: {
+    id: Number,
+    name: String,
+  },
+  imageUrl: String,
+  description: String,
 });
 
-const User = mongoose.model("User", UserSchema);
+const Product = mongoose.model("Product", ProductSchema);
 
 exports.handler = async (event: any) => {
   if (event.httpMethod !== "GET") {
@@ -18,10 +23,10 @@ exports.handler = async (event: any) => {
   await connectDB();
 
   try {
-    const users = await User.find().select("-password");
+    const products = await Product.find();
     return {
       statusCode: 200,
-      body: JSON.stringify(users),
+      body: JSON.stringify(products),
     };
   } catch (error) {
     return {

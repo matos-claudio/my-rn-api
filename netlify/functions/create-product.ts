@@ -1,31 +1,33 @@
 import mongoose from "mongoose";
-import bcrypt from "bcrypt";
 import connectDB from "../db-conection";
-const UserSchema = new mongoose.Schema({
+
+const ProductSchema = new mongoose.Schema({
   name: String,
-  email: String,
-  password: String, // Lembre-se: Em um cenário real, a senha deve ser hasheada.
-  firebase_token: String,
+  price: Number,
+  unit: String,
+  category: {
+    id: Number,
+    name: String,
+  },
+  imageUrl: String,
+  description: String,
 });
 
-const User = mongoose.model("User", UserSchema);
+const Product = mongoose.model("Product", ProductSchema);
 
 exports.handler = async (event: any) => {
   if (event.httpMethod !== "POST") {
     return { statusCode: 405, body: "Method Not Allowed" };
   }
   await connectDB();
-
   const data = JSON.parse(event.body);
 
   try {
-    const user = new User(data);
-    const saltRounds = 10;
-    user.password = await bcrypt.hash(user.password!, saltRounds);
-    const savedUser = await user.save();
+    const product = new Product(data);
+    const savedProduct = await product.save();
     return {
       statusCode: 201,
-      body: JSON.stringify(savedUser),
+      body: JSON.stringify(savedProduct),
     };
   } catch (error) {
     return {
