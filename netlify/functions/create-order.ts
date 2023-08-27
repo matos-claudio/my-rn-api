@@ -1,20 +1,24 @@
 import mongoose from "mongoose";
 import connectDB from "../db-conection";
 
+// type Items = {};
+
 const OrderSchema = new mongoose.Schema({
   customer: {
     _id: String,
     name: String,
   },
-  items: {
-    _id: String,
-    unit: String,
-    quantity: Number,
-    total: Number,
-    imageUrl: String,
-    name: String,
-    price: Number,
-  },
+  items: [
+    {
+      _id: String,
+      unit: String,
+      quantity: Number,
+      total: Number,
+      imageUrl: String,
+      name: String,
+      price: Number,
+    },
+  ],
 });
 
 const Order = mongoose.model("Order", OrderSchema);
@@ -28,7 +32,7 @@ exports.handler = async (event: any) => {
 
   try {
     const order = new Order(data);
-    const savedOrder= await order.save();
+    const savedOrder = await order.save();
     return {
       statusCode: 201,
       body: JSON.stringify(savedOrder),
