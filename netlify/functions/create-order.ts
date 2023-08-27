@@ -1,9 +1,14 @@
 import mongoose from "mongoose";
 import connectDB from "../db-conection";
+import moment from "moment";
 
 // type Items = {};
 
 const OrderSchema = new mongoose.Schema({
+  date: {
+    type: String,
+    dafault: moment().format('DD/MM/YYYY')
+  },
   customer: {
     _id: String,
     name: String,
