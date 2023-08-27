@@ -6,8 +6,8 @@ import moment from "moment";
 
 const OrderSchema = new mongoose.Schema({
   date: {
-    type: String,
-    dafault: moment().format('DD/MM/YYYY'),
+    type: Date,
+    dafault: Date.now()
   },
   customer: {
     _id: String,
