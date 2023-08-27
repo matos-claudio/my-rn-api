@@ -7,7 +7,7 @@ import moment from "moment";
 const OrderSchema = new mongoose.Schema({
   date: {
     type: String,
-    dafault: moment().format('DD/MM/YYYY')
+    dafault: moment().format('DD/MM/YYYY'),
   },
   customer: {
     _id: String,
